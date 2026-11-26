@@ -1,0 +1,23 @@
+# syntax=docker/dockerfile:1.4
+
+FROM python:3.11.17-slim-bookworm
+
+WORKDIR /home/microblog
+
+COPY requirements requirements
+
+COPY Makefile pytest.ini .pylintrc .coveragerc ./
+COPY docker/test.sh ./test.sh
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PATH="/home/microblog/.venv/bin:${PATH}"
+
+RUN <<EOF
+apt-get update && apt-get install -y --no-install-recommends make=4.3-4.1 \
+    && rm -rf /var/lib/apt/lists/*
+python -m venv .venv \
+&& .venv/bin/pip install --no-cache-dir -r requirements/test.txt
+chmod +x test.sh
+EOF
+
+CMD ["./test.sh"]

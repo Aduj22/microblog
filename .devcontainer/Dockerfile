@@ -32,7 +32,7 @@ EOF
 # Basic tools, versions follow the base image.
 RUN <<EOF
     apt-get update
-    apt-get install -y --no-install-recommends ca-certificates curl git gnupg make openssh-client
+    apt-get install -y --no-install-recommends build-essential ca-certificates curl git gnupg make openssh-client
     rm -rf /var/lib/apt/lists/*
 EOF
 
